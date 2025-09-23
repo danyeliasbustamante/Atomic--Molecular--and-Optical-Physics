@@ -48,10 +48,12 @@ so \(\Phi\in[0,1]\) measures alignment (1 = full order, 0 = disorder).
 ## Results & Figures
 
 ### A. Vicsek-type alignment (animation)
-<img src="figures/anim_vicsek.gif" width="420" alt="Vicsek animation">
+
+![Vicsek animation](figures/anim_vicsek.gif)
 
 **What to look for.** Random headings at start, then rapid coarsening into a coherently moving cluster.  
-**Interpretation.** For fixed \(N, v, R\) and moderate noise \(\eta\), the system self-organizes: headings synchronize and the center-of-mass drift emerges.
+**Interpretation.** For fixed (N, v, R) and moderate noise (η), the system self-organizes: headings synchronize and the center-of-mass drift emerges.
+
 
 ---
 

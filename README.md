@@ -47,9 +47,6 @@ so \(\Phi\in[0,1]\) measures alignment (1 = full order, 0 = disorder).
 
 ## Results & Figures
 
-> The image paths below assume the files live in `figures/`.  
-> If your files are elsewhere, adjust the links accordingly.
-
 ### A. Vicsek-type alignment (animation)
 <img src="figures/anim_vicsek.gif" width="420" alt="Vicsek animation">
 

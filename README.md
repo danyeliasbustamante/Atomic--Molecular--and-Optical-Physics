@@ -29,10 +29,13 @@ This repo currently includes a Vicsek-type alignment model for self-propelled pa
 We simulate \(N\) self-propelled particles with constant speed \(v\) in a 2D periodic box.  
 At each step, each particle aligns to the **average heading of neighbors** within radius \(R\), plus angular noise of amplitude \(\eta\).  
 The global **order parameter** is
+
 $$
 \Phi(t)=\frac{1}{N}\left\lVert \sum_{i=1}^{N}\mathbf{v}_i(t)\right\rVert \big/ v,
 $$
-so $\Phi\in[0,1]$ measures alignment (1 = full order, 0 = disorder).
+
+so $\Phi \in [0,1]$ measures alignment (1 = full order, 0 = disorder).
+
 
 
 ---

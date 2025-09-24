@@ -101,7 +101,7 @@ so \(\Phi \in [0,1]\) measures alignment (1 = full order, 0 = disorder).
 # 1) Create environment (Python ≥3.10 recommended)
 python -m venv .venv
 # Windows:
-#   .venv\Scripts ctivate
+#   .venv\Scripts activate
 # macOS/Linux:
 #   source .venv/bin/activate
 pip install -r requirements.txt

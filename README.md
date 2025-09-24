@@ -116,4 +116,57 @@ python vicsek_alignment.py --save figures/anim_vicsek.gif
 
 # 2.3) Order–disorder curve Φ(η)
 python phi_vs_eta.py --out figures/phi_vs_eta.png
+```
 
+Outputs are written to `figures/` (and `results/` when applicable).  
+Use `run_all.py --only <task>` or `--skip <task>` to filter tasks.
+
+---
+
+## Parameters & model
+
+- \(N\): number of particles  
+- \(L\): box size (periodic \(L\times L\))  
+- \(v\): constant speed (step size per iteration)  
+- \(R\): interaction radius (metric neighbors)  
+- \(\eta\): uniform angular noise in \([ -\eta/2,\ \eta/2 ]\)  
+- **Update rule:** each particle takes the **mean orientation** of neighbors within \(R\), then adds noise, then moves a step of length \(v\).
+- **Boundary condition:** periodic; positions wrap via minimum-image convention.
+- **Reproducibility:** set a seed via `amop.set_seed(seed)` or pass `seed=` to simulation helpers.
+
+---
+
+## Project structure
+
+```
+amop/                 # Core package
+  ├── simulate.py     # Vicsek-type simulation in 2D
+  ├── order_params.py # Polarization and nematic order (2D)
+  ├── bootstrap.py    # RNG seeding / global generator
+  └── __init__.py     # Public API (re-exports)
+
+examples/
+  └── run_example.py  # Minimal demo that produces a snapshot figure
+
+tests/                # Minimal test suite
+figures/              # Generated figures and animations
+run_all.py            # Orchestrates all reproducible artifacts
+vicsek_alignment.py   # Generates anim_vicsek.gif
+phi_vs_eta.py         # Generates phi_vs_eta.png
+demo.py               # Simple script that produces amop_demo_*.png
+```
+
+---
+
+## Cite & references
+
+- Vicsek, T., et al. *Novel Type of Phase Transition in a System of Self-Driven Particles*. **Phys. Rev. Lett.** 75, 1226 (1995).  
+- Marchetti, M.C., et al. *Hydrodynamics of soft active matter*. **Rev. Mod. Phys.** 85, 1143 (2013).
+
+If you use this code for teaching or research demos, please reference this repository (AMOP — Active Matter & Optical Physics Sandbox).
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details

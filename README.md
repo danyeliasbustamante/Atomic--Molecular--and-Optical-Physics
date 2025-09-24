@@ -13,8 +13,8 @@ This repo currently includes a Vicsek-type alignment model for self-propelled pa
 - [Key ideas](#key-ideas)
 - [Results & Figures](#results--figures)
   - [A. Vicsek-type alignment (animation)](#a-vicsek-type-alignment-animation)
-  - [B. Time evolution of global order \u03A6](#b-time-evolution-of-global-order-φ)
-  - [C. Order–disorder transition vs noise \u03B7](#c-orderdisorder-transition-vs-noise-η)
+  - [B. Time evolution of global order Φ](#b-time-evolution-of-global-order-φ)
+  - [C. Order–disorder transition vs noise η](#c-orderdisorder-transition-vs-noise-η)
   - [D. Example trajectories](#d-example-trajectories)
 - [Reproduce the figures](#reproduce-the-figures)
 - [Parameters & model](#parameters--model)
@@ -34,9 +34,7 @@ $$
 \Phi(t)=\frac{1}{N}\left\lVert \sum_{i=1}^{N}\mathbf{v}_i(t)\right\rVert \big/ v,
 $$
 
-so $\Phi \in [0,1]$ measures alignment (1 = full order, 0 = disorder).
-
-
+so \(\Phi \in [0,1]\) measures alignment (1 = full order, 0 = disorder).
 
 ---
 
@@ -51,46 +49,40 @@ so $\Phi \in [0,1]$ measures alignment (1 = full order, 0 = disorder).
 
 ## Results & Figures
 
-## Example simulation
-
-The figure below shows a final configuration of an active particle system
-(Vicsek-type simulation). Each arrow represents the position and orientation
-of a particle in the periodic box.
-
-- **P = 0.89**: polarization parameter (degree of polar alignment).
-- **S = 0.71**: nematic order parameter in 2D.
+**Example snapshot.** Final configuration of an active particle system (Vicsek-type). Each arrow is a particle’s position and orientation.  
+**Example values:** \(P \approx 0.89\) (polarization), \(S \approx 0.71\) (2D nematic order).
 
 ![Active particles simulation](figures/amop_demo_20250923-173425.png)
-
-
 
 ### A. Vicsek-type alignment (animation)
 
 ![Vicsek animation](figures/anim_vicsek.gif)
 
 **What to look for.** Random headings at start, then rapid coarsening into a coherently moving cluster.  
-**Interpretation.** For fixed (N, v, R) and moderate noise (η), the system self-organizes: headings synchronize and the center-of-mass drift emerges.
-
+**Interpretation.** For fixed \((N, v, R)\) and moderate noise \((\eta)\), the system self-organizes: headings synchronize and center-of-mass drift emerges.
 
 ---
 
 ### B. Time evolution of global order \(\Phi\)
+
 <img src="figures/order_parameter.png" width="800" alt="Order parameter vs time">
 
 **Caption.** \(\Phi(t)\) rises from near 0 to \(\approx 1\) and then fluctuates weakly around a plateau.  
-**Takeaway.** Transient alignment gives way to a steady ordered phase; the time to reach the plateau shrinks when \(\eta\) is smaller or density is larger.
+**Takeaway.** Transient alignment gives way to a steady ordered phase; the time-to-plateau shrinks when \(\eta\) is smaller or density is larger.
 
 ---
 
-### C. Order–disorder transition (sweep in \(\eta\))
+### C. Order–disorder transition vs noise \(\eta\)
+
 <img src="figures/phi_vs_eta.png" width="560" alt="Phi vs eta with error bars">
 
 **Caption.** Long-time average \(\langle \Phi \rangle\) vs noise amplitude \(\eta\). Markers show the mean over seeds; error bars show sample variability.  
-**Takeaway.** A clear monotonic loss of order with noise. The knee indicates the transition region; error bars grow near criticality (enhanced fluctuations).
+**Takeaway.** Clear monotonic loss of order with noise. The knee indicates the transition region; error bars grow near criticality (enhanced fluctuations).
 
 ---
 
 ### D. Example trajectories
+
 <img src="figures/tracks_three.png" width="680" alt="Trajectories of selected particles">
 
 **Caption.** Trajectories of three tagged particles (colored), drawn over faded tracks of the rest.  
@@ -103,25 +95,25 @@ of a particle in the periodic box.
 ```bash
 # 1) Create environment (Python ≥3.10 recommended)
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+# Windows:
+#   .venv\Scripts\activate
+# macOS/Linux:
+#   source .venv/bin/activate
 pip install -r requirements.txt
-# Minimal set (if no requirements.txt):
-# pip install numpy matplotlib
 
-# 2) Run a single simulation + animation and order trace
-python sim_vicsek.py --N 200 --L 20 --v 0.05 --R 1.0 --eta 0.2 \
-    --steps 1500 --dt 1.0 --seed 1 --save
+# 2) (Option A) Reproduce everything
+python run_all.py
 
-# Expected outputs (paths can be configured with --outdir):
-# figures/anim_vicsek.gif
-# figures/order_parameter.png
+# 2) (Option B) Generate specific artifacts
 
-# 3) Sweep over noise to reproduce the transition curve
-python sweep_eta.py --N 200 --L 20 --v 0.05 --R 1.0 \
-    --eta_min 0.0 --eta_max 3.2 --eta_steps 25 \
-    --steps 1500 --burnin 400 --seeds 5 --dt 1.0 --save
+# 2.1) Example snapshot (creates figures/amop_demo_*.png)
+python demo.py
+# or:
+python -m examples.run_example
 
-# Expected output:
-# figures/phi_vs_eta.png
+# 2.2) Vicsek animation
+python vicsek_alignment.py --save figures/anim_vicsek.gif
 
+# 2.3) Order–disorder curve Φ(η)
+python phi_vs_eta.py --out figures/phi_vs_eta.png
 

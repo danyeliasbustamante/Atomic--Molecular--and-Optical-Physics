@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run examples.run_example (module)",
+      "type": "python",
+      "request": "launch",
+      "module": "examples.run_example",
+      "justMyCode": true
+    }
+  ]
+}

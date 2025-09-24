@@ -19,6 +19,11 @@ This repo currently includes a Vicsek-type alignment model for self-propelled pa
 - [Reproduce the figures](#reproduce-the-figures)
 - [Parameters & model](#parameters--model)
 - [Project structure](#project-structure)
+- [Reproducibility notes (per figure)](#reproducibility-notes-per-figure)
+- [Limitations & edge cases](#limitations--edge-cases)
+- [Why this is relevant for MtL-URO](#why-this-is-relevant-for-mtl-uro)
+- [Example console log](#example-console-log)
+- [Tests & minimal CI](#tests--minimal-ci)
 - [Cite & references](#cite--references)
 - [License](#license)
 
@@ -96,7 +101,7 @@ so \(\Phi \in [0,1]\) measures alignment (1 = full order, 0 = disorder).
 # 1) Create environment (Python ≥3.10 recommended)
 python -m venv .venv
 # Windows:
-#   .venv\Scripts\activate
+#   .venv\Scripts ctivate
 # macOS/Linux:
 #   source .venv/bin/activate
 pip install -r requirements.txt
@@ -158,6 +163,82 @@ demo.py               # Simple script that produces amop_demo_*.png
 
 ---
 
+## Reproducibility notes (per figure)
+
+To facilitate exact replication, we include the parameters and seeds used for each artifact. You can replace these with your own choices; the values below are **examples** you can make concrete in your runs.
+
+- **Example snapshot (PNG):** `N=300, L=20, v=0.10, R=1.0, η=0.30, steps=300, seed=42`  
+  *Runtime:* ~12 s on Python 3.12 (Windows 10, i7-1165G7).  
+  *Command:* `python demo.py --n 300 --L 20 --speed 0.1 --radius 1.0 --eta 0.3 --steps 300 --seed 42`
+
+- **Vicsek animation (GIF):** `N=200, L=20, v=0.05, R=1.0, η=0.25, steps=1500, seed=1`  
+  *Runtime:* ~25 s on Python 3.12.  
+  *Command:* `python vicsek_alignment.py --N 200 --L 20 --v 0.05 --R 1.0 --eta 0.25 --steps 1500 --seed 1 --save figures/anim_vicsek.gif`
+
+- **Order–disorder curve Φ(η) (PNG):** `N=200, L=20, v=0.05, R=1.0, steps=1500 (burn-in 400), η∈[0.0, 3.2] with 25 points, seeds=5`  
+  *Runtime:* ~2–4 min depending on CPU.  
+  *Command:* `python phi_vs_eta.py --N 200 --L 20 --v 0.05 --R 1.0 --eta_min 0.0 --eta_max 3.2 --eta_steps 25 --steps 1500 --burnin 400 --seeds 5 --out figures/phi_vs_eta.png`
+
+> *Note.* Periodic boundaries via minimum-image convention; neighbor sets include the focal particle (dist²=0). Angular noise is uniform in \([ -\eta/2,\ \eta/2 ]\).
+
+---
+
+## Limitations & edge cases
+
+- **Neighbor search is O(N²).** For \(N \gtrsim 2\times 10^3\), consider grid hashing / cell lists to keep it near O(N).
+- **Finite-size & density effects.** The knee in \(\langle \Phi \rangle(\eta)\) shifts with number density \(\rho = N/L^2\); results are sensitive near the transition.
+- **Self-inclusion & noise law.** Whether the focal particle is included in its neighbor set, and whether noise is uniform vs wrapped-normal, both affect critical behavior.
+- **Time step & speed.** Large \(v\) (or \(dt\)) can overshoot interaction neighborhoods; consider smaller steps for accuracy when \(R\) is small.
+
+---
+
+## Why this is relevant for MtL-URO
+
+This sandbox reflects a workflow I’d apply to non-equilibrium/biophysics problems:
+1) Define measurable order parameters and simple, testable rules.  
+2) Build minimal, reproducible simulations with explicit seeds and logs.  
+3) Connect outcomes to phase-transition phenomenology and fluctuations.  
+
+Extensions I’d like to explore in a lab context: density-dependent motility (MIPS-like behavior), alignment + repulsion + soft collisions, chemotactic biases, and metrics beyond \(\Phi\) (cluster-size distributions, spatial correlation lengths).
+
+---
+
+## Example console log
+
+```
+[AMOP] Tareas seleccionadas: demo_active, vicsek_anim, phi_vs_eta
+[AMOP] demo_active
+$ python examples/demo_active.py
+[AMOP] OK (12.3s)
+[AMOP] vicsek_anim
+$ python vicsek_alignment.py --save figures/anim_vicsek.gif
+[AMOP] OK (24.8s)
+[AMOP] phi_vs_eta
+$ python phi_vs_eta.py --out figures/phi_vs_eta.png
+[AMOP] OK (142.6s)
+
+[AMOP] Resumen: 3/3 OK en 179.7s
+[AMOP] Figuras: .../figures
+[AMOP] Datos: .../results/data
+[AMOP] Logs: .../results/logs
+```
+
+*(Times will vary with hardware/OS.)*
+
+---
+
+## Tests & minimal CI
+
+Run tests locally:
+
+```bash
+python -m pytest -q
+```
+
+A minimal CI can run on GitHub Actions to execute `run_all.py` and, optionally, upload `figures/` as build artifacts (workflow not included here to keep the repo lean).
+
+---
+
 ## Cite & references
 
 - Vicsek, T., et al. *Novel Type of Phase Transition in a System of Self-Driven Particles*. **Phys. Rev. Lett.** 75, 1226 (1995).  
@@ -169,4 +250,4 @@ If you use this code for teaching or research demos, please reference this repos
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details
+MIT License. See [LICENSE](LICENSE) for details.

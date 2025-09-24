@@ -51,6 +51,19 @@ so $\Phi \in [0,1]$ measures alignment (1 = full order, 0 = disorder).
 
 ## Results & Figures
 
+## Ejemplo de simulación
+
+La siguiente figura muestra una configuración final de un sistema de partículas activas
+(simulación tipo Vicsek). Cada flecha representa la orientación y posición de una partícula
+en la caja periódica.
+
+- **P = 0.89**: parámetro de polarización (grado de alineamiento polar).
+- **S = 0.71**: parámetro de orden nemático en 2D.
+
+![Simulación de partículas activas](figures/amop_demo_20250923-173425.png)
+
+
+
 ### A. Vicsek-type alignment (animation)
 
 ![Vicsek animation](figures/anim_vicsek.gif)
